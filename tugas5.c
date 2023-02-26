@@ -32,7 +32,7 @@ void menuString() {
         hurufAkhir();
         break;
     }
-    printf("ApakahAnda Ingin Kembali Ke menu? [y/n] ");
+    printf("Apakah Anda Ingin Kembali Ke menu? [y/n] ");
     scanf(" %c",&ulang);
     }
 }
