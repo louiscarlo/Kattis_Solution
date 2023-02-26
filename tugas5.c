@@ -7,6 +7,8 @@ void vokal();
 void hurufAkhir();
 void menuString() {
     int menu;
+    char ulang;
+    while(ulang=='y') {
     printf("\t\tMENU STRING\n");
     printf("1. Kapital\n");
     printf("2. Huruf Vokal\n");
@@ -29,6 +31,9 @@ void menuString() {
     case 3: //huruf akhir
         hurufAkhir();
         break;
+    }
+    printf("ApakahAnda Ingin Kembali Ke menu? [y/n] ");
+    scanf(" %c",&ulang);
     }
 }
 
