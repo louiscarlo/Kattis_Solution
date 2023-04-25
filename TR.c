@@ -7,7 +7,7 @@ struct pinjam{
     char nama[50];
     int nim;
     char judulBuku[50];
-    int kode;
+    char kode[10];
     int waktu;
     struct pinjam *next;
 }*prev, *temp, *head;
@@ -18,6 +18,7 @@ void tambahData() {
     printf("Selamat Datang di Menu Peminjaman Buku Ini\n\n");
     printf("Berapakah Buku yang Ingin Anda Pinjam? ");
     scanf("%d",&input); 
+    if(input>=1) {
     printf("\nSilahkan Isikan Data di Bawah Ini\n\n");
     for(int i=0; i<input; i++) {
         temp = (struct pinjam*) malloc(sizeof(struct pinjam));
@@ -29,7 +30,7 @@ void tambahData() {
         printf("Judul Buku\t\t\t: ");
         scanf(" %[^\n]s",&temp -> judulBuku);
         printf("Kode Buku\t\t\t: ");
-        scanf(" %d",&temp -> kode);
+        scanf(" %[^\n]s",&temp -> kode);
         printf("Waktu Peminjaman [Dalam Hari]\t: ");
         scanf(" %d",&temp -> waktu);
         printf("\n");
@@ -45,6 +46,10 @@ void tambahData() {
     }
     printf("\nData Buku yang Ingin Anda Pinjam Sudah Berhasil Diinput\n");
     hitung+=input;
+    }
+    else {
+        printf("Maaf, Buku yang Harus Diinputkan Minimal 1 atau Lebih Dari 1\n");
+    }
 }
 
 void lihatData() {
@@ -62,12 +67,87 @@ void lihatData() {
             printf("Nama Peminjam\t\t\t: %s\n",temp -> nama);
             printf("NIM\t\t\t\t: %d\n",temp -> nim);
             printf("Judul Buku\t\t\t: %s\n",temp -> judulBuku);
-            printf("Kode Buku\t\t\t: %d\n",temp -> kode);
+            printf("Kode Buku\t\t\t: %s\n",temp -> kode);
             printf("Waktu Peminjaman [Dalam Hari]\t: %d\n\n",temp -> waktu);
             i++;
             temp = temp -> next;
         }
     }
+}
+
+void update() {
+    int ubah;
+    system("cls");
+    if(head==NULL) {
+        printf("Maaf Data Anda Kosong\n");
+        printf("\nSilahkan Isi Terlebih Dahulu Data Buku yang Ingin Diinputkan\n\n");
+    }
+    else {
+        char Nama[50];
+        int NIM;
+        printf("Berapakah Data yang Ingin Anda Ubah?\n");
+        scanf("%d",&ubah);
+        if(ubah>=1) {
+            if(ubah<=hitung) {
+                for(int i=1; i<=ubah; i++) {
+                    char namaBaru[50];
+                    int nimBaru;
+                    char judulBukuBaru[50];
+                    char kodeBaru[10];
+                    int waktuBaru;
+                    temp = head;
+                    printf("\nSilahkan Inputkan Nama dan NIM ke-%d Untuk Data yang Ingin Anda Edit\n\n",i);
+                    printf("Nama\t: ");
+                    scanf(" %[^\n]s",&Nama);
+                    printf("\n");
+                    printf("NIM\t: ");
+                    scanf("%d",&NIM);
+                    printf("\n");
+                    while(temp!=NULL) {
+                        if((strcmp(temp->nama,Nama)==0) && temp->nim==NIM) {
+                            printf("\nData buku ke-%d\n",i);
+                            printf("Nama Peminjam\t\t\t: %s\n",temp -> nama);
+                            printf("NIM\t\t\t\t: %d\n",temp -> nim);
+                            printf("Judul Buku\t\t\t: %s\n",temp -> judulBuku);
+                            printf("Kode Buku\t\t\t: %s\n",temp -> kode);
+                            printf("Waktu Peminjaman [Dalam Hari]\t: %d\n\n",temp -> waktu);
+                            printf("Edit Data ke-%d\n",i);
+                            printf("Nama Peminjam\t\t\t: ");
+                            scanf(" %[^\n]",&namaBaru);
+                            strcpy(temp->nama,namaBaru);
+                            printf("NIM\t\t\t\t: ");
+                            scanf("%d",&nimBaru);
+                            temp->nim = nimBaru;
+                            printf("Judul Buku\t\t\t: ");
+                            scanf(" %[^\n]s",&judulBukuBaru);
+                            strcpy(temp->judulBuku,judulBukuBaru);
+                            printf("Kode Buku\t\t\t: ");
+                            scanf(" %[^\n]s",&kodeBaru);
+                            strcpy(temp->kode,kodeBaru);
+                            printf("Waktu Peminjaman [Dalam Hari]\t: ");
+                            scanf(" %d",&waktuBaru);
+                            temp->waktu = waktuBaru;
+                            printf("\nData Berhasil Diedit\n");
+                        }
+                        else if(temp==NULL || temp ->next==NULL) {
+                            printf("\nMaaf, Data Tidak Ditemukan\n");
+                        }
+                        temp = temp->next;
+                    }
+                }
+            }
+            else {
+                printf("\nMaaf, Data yang Ingin Diubah Lebih Dari yang Sudah Tersedia\n");
+            }
+        }
+        else{
+            printf("\nMaaf, Data Buku yang Bisa Diubah Minimal 1 Atau Lebih Dari 1\n");
+        }
+    }
+}
+
+void delete() {
+
 }
 
 void menuUtama() {
@@ -92,8 +172,10 @@ void menuUtama() {
             lihatData();
             break;
         case 3: 
+            update();
             break;
         case 4:
+            delete();
             break;
         case 5:
             exit(0);
