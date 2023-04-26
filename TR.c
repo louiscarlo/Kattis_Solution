@@ -105,34 +105,37 @@ void update() {
                     printf("\n");
                     while(temp!=NULL) {
                         if((strcmp(temp->nama,Nama)==0) && temp->nim==NIM) {
-                            printf("\nData buku ke-%d\n",i);
-                            printf("Nama Peminjam\t\t\t: %s\n",temp -> nama);
-                            printf("NIM\t\t\t\t: %d\n",temp -> nim);
-                            printf("Judul Buku\t\t\t: %s\n",temp -> judulBuku);
-                            printf("Kode Buku\t\t\t: %s\n",temp -> kode);
-                            printf("Waktu Peminjaman [Dalam Hari]\t: %d\n\n",temp -> waktu);
-                            printf("Edit Data ke-%d\n",i);
-                            printf("Nama Peminjam\t\t\t: ");
-                            scanf(" %[^\n]",&namaBaru);
-                            strcpy(temp->nama,namaBaru);
-                            printf("NIM\t\t\t\t: ");
-                            scanf("%d",&nimBaru);
-                            temp->nim = nimBaru;
-                            printf("Judul Buku\t\t\t: ");
-                            scanf(" %[^\n]s",&judulBukuBaru);
-                            strcpy(temp->judulBuku,judulBukuBaru);
-                            printf("Kode Buku\t\t\t: ");
-                            scanf(" %[^\n]s",&kodeBaru);
-                            strcpy(temp->kode,kodeBaru);
-                            printf("Waktu Peminjaman [Dalam Hari]\t: ");
-                            scanf(" %d",&waktuBaru);
-                            temp->waktu = waktuBaru;
-                            printf("\nData Berhasil Diedit\n");
-                        }
-                        else if(temp==NULL || temp ->next==NULL) {
-                            printf("\nMaaf, Data Tidak Ditemukan\n");
+                           break;
                         }
                         temp = temp->next;
+                    }
+                    if(temp==NULL) {
+                        printf("\nMaaf, Data Tidak Ditemukan\n");
+                    }
+                    else{
+                        printf("\nData buku ke-%d\n",i);
+                        printf("Nama Peminjam\t\t\t: %s\n",temp -> nama);
+                        printf("NIM\t\t\t\t: %d\n",temp -> nim);
+                        printf("Judul Buku\t\t\t: %s\n",temp -> judulBuku);
+                        printf("Kode Buku\t\t\t: %s\n",temp -> kode);
+                        printf("Waktu Peminjaman [Dalam Hari]\t: %d\n\n",temp -> waktu);
+                        printf("Edit Data ke-%d\n",i);
+                        printf("Nama Peminjam\t\t\t: ");
+                        scanf(" %[^\n]",&namaBaru);
+                        strcpy(temp->nama,namaBaru);
+                        printf("NIM\t\t\t\t: ");
+                        scanf("%d",&nimBaru);
+                        temp->nim = nimBaru;
+                        printf("Judul Buku\t\t\t: ");
+                        scanf(" %[^\n]s",&judulBukuBaru);
+                        strcpy(temp->judulBuku,judulBukuBaru);
+                        printf("Kode Buku\t\t\t: ");
+                        scanf(" %[^\n]s",&kodeBaru);
+                        strcpy(temp->kode,kodeBaru);
+                        printf("Waktu Peminjaman [Dalam Hari]\t: ");
+                        scanf(" %d",&waktuBaru);
+                        temp->waktu = waktuBaru;
+                        printf("\nData Berhasil Diedit\n");
                     }
                 }
             }
