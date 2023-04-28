@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include <windows.h>
+#include <ctype.h>
+#include <math.h>
+#include <time.h>
+
+void gotoxy(int x, int y){
+HANDLE hConsoleOutput;
+COORD dwCursorPosition;
+dwCursorPosition.X = x;
+dwCursorPosition.Y = y;
+hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+SetConsoleCursorPosition(hConsoleOutput,dwCursorPosition);
+}
+
 
 struct pinjam{
     char nama[50];
@@ -17,7 +31,7 @@ void tambahData() {
     int input;
     printf("Selamat Datang di Menu Peminjaman Buku Ini\n\n");
     printf("Berapakah Buku yang Ingin Anda Pinjam? ");
-    scanf("%d",&input); 
+    scanf("%d",&input);
     if(input>=1) {
     printf("\nSilahkan Isikan Data di Bawah Ini\n\n");
     for(int i=0; i<input; i++) {
@@ -150,37 +164,202 @@ void update() {
 }
 
 void delete() {
-
+    char ulang;
+    system("cls");
+    char Nama[50];
+    int NIM;
+    if (head == NULL) {
+        printf("Maaf Data Anda Kosong\nTidak Ada Data Yang Bisa di Hapus\n");
+    }
+    else {
+        printf("\nMasukkan Nama dan NIM dari Data yang Ingin Dihapus:\n");
+        printf("Nama\t: ");
+        scanf(" %[^\n]s", &Nama);
+        printf("NIM\t: ");
+        scanf("%d", &NIM);
+        temp = head;
+        prev = NULL;
+        while (temp != NULL) {
+            if ((strcmp(temp->nama, Nama) == 0) && temp->nim == NIM) {
+                break;
+            }
+            prev = temp;
+            temp = temp->next;
+        }
+        if (temp == NULL) {
+            printf("\nMaaf, Data Tidak Ditemukan\n");
+        }
+        else {
+            printf("\nData yang akan dihapus:\n");
+            printf("Nama Peminjam\t\t\t: %s\n",temp -> nama);
+            printf("NIM\t\t\t\t: %d\n",temp -> nim);
+            printf("Judul Buku\t\t\t: %s\n",temp -> judulBuku);
+            printf("Kode Buku\t\t\t: %s\n",temp -> kode);
+            printf("Waktu Peminjaman [Dalam Hari]\t: %d\n\n",temp -> waktu);
+            if (prev == NULL) {
+                head = temp->next;
+            }
+            else {
+                prev->next = temp->next;
+            }
+            free(temp);
+            printf("\nData Berhasil Dihapus\n");
+            hitung-=1;
+        }
+        printf("\nApakah Anda Ingin Menghapus Data Lagi? [Y/T] ");
+        scanf(" %c",&ulang);
+        getch();
+        if((ulang=='y' || ulang=='Y')&&hitung>=1) {
+            delete();
+        }
+        else if(hitung<1) {
+            printf("\nMaaf, Sudah Tidak Ada Lagi Data yang Bisa Dihapus\n");
+        }
+    }
 }
+void urutkanNama() {
+    system("cls");
+    if (head == NULL) {
+        printf("Maaf Belum Ada Data yang Diisikan\n");
+        printf("\nSilahkan Isi Terlebih Dahulu Data Buku yang Ingin Diinputkan\n\n");
+    }
+    else{
+        int swapped;
+        struct pinjam *p;
+        struct pinjam *lptr = NULL;
 
+        do {
+            swapped = 0;
+            p = head;
+
+            while (p->next != lptr) {
+                if (strcmp(p->nama, p->next->nama) > 0) {
+                    temp = (struct pinjam*) malloc(sizeof(struct pinjam));
+                    strcpy(temp->nama, p->nama);
+                    temp->nim = p->nim;
+                    strcpy(temp->judulBuku, p->judulBuku);
+                    strcpy(temp->kode, p->kode);
+                    temp->waktu = p->waktu;
+
+                    strcpy(p->nama, p->next->nama);
+                    p->nim = p->next->nim;
+                    strcpy(p->judulBuku, p->next->judulBuku);
+                    strcpy(p->kode, p->next->kode);
+                    p->waktu = p->next->waktu;
+
+                    strcpy(p->next->nama, temp->nama);
+                    p->next->nim = temp->nim;
+                    strcpy(p->next->judulBuku, temp->judulBuku);
+                    strcpy(p->next->kode, temp->kode);
+                    p->next->waktu = temp->waktu;
+
+                    free(temp);
+                    swapped = 1;
+                }
+                p = p->next;
+            }
+            lptr = p;
+        } while (swapped == 1);
+        printf("Data Setelah Diurutkan\n");
+        lihatData();
+    }
+}
+void urutkanNIM() {
+    system("cls");
+    if(head==NULL) {
+        printf("Maaf Belum Ada Data yang Diisikan\n");
+        printf("\nSilahkan Isi Terlebih Dahulu Data Buku yang Ingin Diinputkan\n\n");
+    }
+    else {
+        int swapped;
+        struct pinjam *p;
+        struct pinjam *lptr = NULL;
+
+        do {
+            swapped = 0;
+            p = head;
+
+            while (p->next != lptr) {
+                if (p->nim > p->next->nim) {
+                    temp = (struct pinjam*) malloc(sizeof(struct pinjam));
+                    strcpy(temp->nama, p->nama);
+                    temp->nim = p->nim;
+                    strcpy(temp->judulBuku, p->judulBuku);
+                    strcpy(temp->kode,p->kode);
+                    temp->waktu = p->waktu;
+
+                    strcpy(p->nama, p->next->nama);
+                    p->nim = p->next->nim;
+                    strcpy(p->judulBuku, p->next->judulBuku);
+                    strcpy(p->kode, p->next->kode);
+                    p->waktu = p->next->waktu;
+
+                    strcpy(p->next->nama, temp->nama);
+                    p->next->nim = temp->nim;
+                    strcpy(p->next->judulBuku, temp->judulBuku);
+                    strcpy(p->next->kode, temp->kode);
+                    p->next->waktu = temp->waktu;
+
+                    free(temp);
+                    swapped = 1;
+                }
+                p = p->next;
+            }
+            lptr = p;
+        } while (swapped == 1);
+        printf("Data Setelah Diurutkan\n");
+        lihatData();
+    }
+}
+void urt(){
+    system("cls");
+    int n;
+    printf("urutkan berdasar\n");
+    printf("1. Lihat Data sesuai urutan NIM \n");
+    printf("2. Lihat Data sesuai urutan Nama\n");
+    printf("Masukkan pilihan : ");
+    scanf(" %d", &n);
+    if (n == 1){
+    urutkanNIM();
+    }
+    else if (n == 2){
+    urutkanNama();
+    }
+    else{
+    printf("Menu tidak ada!!!");
+    getch();
+    urt();
+    }
+}
 void menuUtama() {
-    int input;
+    char input;
     do{
-    printf("\t\t\t\t============================================================================\n");
-    printf("\t\t\t\t\t\tMenu Peminjaman Buku Perpustakaan Ngatno\n");
-    printf("\t\t\t\t============================================================================\n");
+    gotoxy(36,1);
+    printf("============================================================================\n");
+    printf("\t\t\t\t   ||               Menu Peminjaman Buku Perpustakaan Ngatno                    ||\n");
+    printf("\t\t\t\t    ============================================================================\n");
     printf("1. Tambah Data Peminjaman\n");
     printf("2. Lihat Data Peminjaman\n");
     printf("3. Edit Data Peminjaman\n");
     printf("4. Hapus Data Peminjaman\n");
     printf("5. Keluar\n");
     printf("Masukkan Pilihan : ");
-    scanf("%d",&input);
+    scanf(" %c",&input);
     getch();
     switch(input) {
-        case 1: 
+        case '1':
             tambahData();
             break;
-        case 2:
-            lihatData();
+        case '2':
+            urt();
             break;
-        case 3: 
+        case '3':
             update();
             break;
-        case 4:
+        case '4':
             delete();
             break;
-        case 5:
+        case '5':
             exit(0);
             break;
         default: printf("\nMaaf Inputan Anda Salah\n\n");
@@ -189,28 +368,51 @@ void menuUtama() {
     printf("\nTekan Enter Untuk Kembali Ke Menu Utama..");
     getch();
     system("cls");
-    } while(input!=5);
+    } while(input!='5');
 }
 
 int main() {
-    char username[20],password[5];
-    int lanjut =0, ulang = 0;
+  system("COLOR 8b");
+
+    int lanjut =0, ulang = 0,j =0;
     for(int i=0; i<=100; i++) {
-        printf("Sedang Loading %d %",i);
+            gotoxy(50,12);
+        printf("Sedang Loading %d %%",i);
         system("cls");
     }
-    printf("\t\t==================================================\n");
-    printf("\t\t\t\tPERPUSTAKAAN NGATNO\n");
-    printf("\t\t==================================================\n\n");
-    printf("\t\t\tSelamat Datang di Perpustakaan Ini\n");
     for(int i=0; i<4; i++) {
-        printf("\t\tSilahkan Masukkan Username dan Password di Bawah Ini\n\n");
+        char c;
+        char username[20],password[20];
+ gotoxy(39,6);
+    printf("===================================================\n");
+    gotoxy(39,7);
+    printf("|               PERPUSTAKAAN NGATNO               |\n");
+    gotoxy(39,8);
+    printf("===================================================\n\n");
+    gotoxy(48,9);
+    printf("Selamat Datang di Perpustakaan Ini\n");
+        gotoxy(39,10);
+        printf("Silahkan Masukkan Username dan Password di Bawah Ini\n\n");
+        gotoxy(46,13);
         printf("Username\t: ");
         scanf(" %[^\n]s",&username);
-        printf("\nPassword\t: ");
-        scanf(" %[^\n]s",&password);
+        gotoxy(46,15);
+        printf("Password\t: ");
+        scanf(" %[^\n]s", &password);
+
+        // while ((c = getch()) != '\r') {
+        //     if (c == '\b' && j > 0) {
+        //         printf("\b \b");
+        //         j--;
+        //     } else if (c != '\b') {
+        //         printf("*");
+        //         password[j] = c;
+        //         j++;
+        //     }
+        // }
         printf("\n");
 
+        gotoxy(60,13);
         if(strcmp(username,"Ngatno")==0 && strcmp(password,"123")==0) {
             break;
         }
@@ -218,22 +420,29 @@ int main() {
             lanjut++;
             ulang++;
             if(ulang<=3) {
-                printf("\nMaaf Username atau Password Anda Salah,Silahkan Coba Lagi\n\n");
+                gotoxy(60,17);
+                printf("\n\t\t\t\tMaaf Username atau Password Anda Salah,Silahkan Coba Lagi");
+                j = 0;
+                password[20] = '\0';
+                getch();
+                system("cls");
             }
             else {
                 break;
             }
         }
     }
-    
+
     if(lanjut<=3) {
-        printf("\nAnda Berhasil Masuk..");
+
+        gotoxy(55,19);
+        printf("Anda Berhasil Masuk..");
         getch();
         system("cls");
         menuUtama();
     }
     else{
-        printf("\nMaaf Anda Telah Gagal dan Tidak Dapat Mencoba Lagi");
+        printf("\n\n\n\n\t\t\t\t\tMaaf Anda Telah Gagal dan Tidak Dapat Mencoba Lagi\n\n\t\t\t\t");
     }
     return 0;
 }
