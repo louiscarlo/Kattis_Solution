@@ -5,9 +5,11 @@ public class LaptopSticker {
         Scanner keyboard = new Scanner(System.in);
         int wc = keyboard.nextInt();
         int hc = keyboard.nextInt();
-        int ws = keyboard.nextInt();
-        int hs = keyboard.nextInt();
-        if(wc-ws>=1 && wc==hc && ws==hs) {
+        int ws = keyboard.nextInt() + 1;
+        int hs = keyboard.nextInt() + 1;
+
+
+        if(wc>ws && hc>hs) {
             System.out.println(1);
         }
         else{
